@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container" id="shopping-list">
+    <h2>Shopping list</h2>
+    <ul class="list-group mt-4" id="list"></ul>
+    <div class="mb-5 mt-2">
+        <b class="float-right">Total $<span id="total"></span></b>
+    </div>
+</div>
+<div id="menu">
+    <h1 class="text-center">Menu</h1>
+    <div class="container-fluid" id="menu-navbar"></div>
+
+    {% for item in menu.items %}
+    <section id="{{item.0}}" class="container pt-2">
+        <h2>{{item.0}}</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">features</th>
+                    <th scope="col">small price</th>
+                    <th scope="col">large price</th>
+                </tr>
+            </thead>
+            <tbody data-type="{{item.0}}">
+                {% for dish in item.1 %}
+                <tr data-info="{{dish.id}}">
+                    <th scope="row">{{dish.features}}</th>
+                    <td data-size="small">{{dish.small_price}}</td>
+                    <td data-size="large">{{dish.large_price}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    {% endfor %}
+    {% for item in alternatives.items %}
+    <section id="{{item.0}}" class="container pt-2">
+        <h2>{{item.0}}</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">description</th>
+                    <th scope="col">price</th>
+                </tr>
+            </thead>
+            <tbody data-type="{{item.0}}">
+                {% for dish in item.1 %}
+                <tr data-info="{{dish.id}}">
+                    <th scope="row">{{dish.description}}</th>
+                    <td data-size=" ">{{dish.price}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    {% endfor %}
+    <section id="toppings" class="container">
+        <h2>toppings</h2>
+        <table class="table">
+            <tbody>
+                {% for item in toppings %}
+                <tr>
+                    <th>{{item.description}}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}
