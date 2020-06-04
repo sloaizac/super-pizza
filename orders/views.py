@@ -4,11 +4,11 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from . import forms
-from .models import Main_food, Alternative_food, Menu_item, Alternative_item, Topping
-
-# Temporal shopping lists
+import json
+from .models import Main_food, Alternative_food, Menu_item, Alternative_item, Topping, Orders
 
 shopping_lists = {}
+order_list = {}
 
 # Create your views here.
 
@@ -27,9 +27,9 @@ def index(request):
     toppings = Topping.objects.all()
     return render(request, 'index.html', {'menu': menu, 'alternatives': alternatives, 'toppings': toppings})
 
-#shopping car
+#update shopping list
 @csrf_exempt
-def addItem(request):
+def updateSL(request):
     if request.method == 'POST':
         item = request.POST['item']
         user = request.user
@@ -40,16 +40,37 @@ def addItem(request):
         return HttpResponse('successfully', status=200)
     return Http404('Page not found')
 
+#get shopping list
 @csrf_exempt
-def getShoppingList(request):
-    if request.method == 'POST':
-        user = request.user
-        try:
-            return JsonResponse({'response': shopping_lists[user]})
-        except:
-            return HttpResponse('No tiene pedidos', status=403)
-    return Http404('Page not found')
+def getSL(request):
+    try:
+        return JsonResponse({'list': shopping_lists[request.user]})
+    except:
+        return JsonResponse({'list': []})
 
+
+#order
+@csrf_exempt
+def order(request):
+    user = request.user
+    if request.method == 'POST':
+        order_list[user] = request.POST['list']
+        return HttpResponse('successfully', status=200)
+    else:
+        return render(request, 'order.html')
+
+@csrf_exempt
+def getOrder(request):
+    return JsonResponse({'list': order_list[request.user]})
+
+@csrf_exempt
+def makeOrder(request):
+    a = json.loads(order_list[request.user])
+    order = Orders.objects.create(detail_json= json.dumps({'user': str(request.user), 'order': list(map(change, a))}))
+    return redirect('index')
+
+def change(item):
+    return json.loads(item)
 
 #login, logout, register
 def signup(request):

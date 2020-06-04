@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container" id="shopping-list">
-    <h2>Shopping list</h2>
-    <ul class="list-group mt-4" id="list"></ul>
-    <div class="mb-5 mt-2">
-        <b class="float-right">Total $<span id="total"></span></b>
+<div class="info-content" id="shopping-list">
+    <h2 class="m-2">Shopping list</h2>
+    <ul id="sl"></ul>
+    <div class="container">
+        <b class="text-right">Total $<span id="total">0</span></b>
     </div>
+    <button type="button" class="btn btn-danger mx-auto mb-2" id="btn-order">ORDER</button>
 </div>
-<div id="menu">
+<div class="info-content" id="menu">
     <h1 class="text-center">Menu</h1>
-    <div class="container-fluid" id="menu-navbar"></div>
-
+    <div class="row d-flex justify-content-between p-4" id="menu-navbar"></div>
     {% for item in menu.items %}
     <section id="{{item.0}}" class="container pt-2">
         <h2>{{item.0}}</h2>
@@ -68,4 +68,24 @@
         </table>
     </section>
 </div>
+<div class="modal fade" id="modal-toppings" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">toppings</h5>
+        </div>
+        <div class="modal-body">
+            {% for item in toppings %}
+                <div>
+                    <input type="checkbox" id="{{item.description}}" class="ml-2 mr-2 topping">
+                    {{item.description}}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary close" data-dismiss="modal" id="save-toppings">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

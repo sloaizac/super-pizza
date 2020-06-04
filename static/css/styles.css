@@ -1,6 +1,8 @@
 
   #page-content-wrapper{
     background-color: green;
+    width: 100vw;
+    height: 100vh;
   }
 
   form{
@@ -14,7 +16,7 @@
     background-color: rgba(252, 0, 0, 0.4);
   }
 
-  #menu{
+  .info-content{
     width: 70%;
     border: 2px solid red;
     background-color: white;
@@ -36,4 +38,16 @@
     background-color: white;
     border: 2px solid red;
     margin-bottom: 1em;
+  }
+
+  #btn-order{
+    display: none;
+    width: 50%;
+  }
+
+  .order-total{
+    margin: 1em;
+    font-size: large;
+    font-weight: bold;
+    text-align: right;
   }

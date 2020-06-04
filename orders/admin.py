@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Main_food, Alternative_food, Menu_item, Alternative_item, Topping
+from .models import Main_food, Alternative_food, Menu_item, Alternative_item, Topping, Orders
 
 # Register your models here.
 
@@ -22,3 +22,12 @@ admin.site.register(Menu_item, Main_item_Admin)
 class Topping_Admin(admin.ModelAdmin):
     list_display = ('id', 'description')
 admin.site.register(Topping, Topping_Admin)
+
+class Orders_Admin(admin.ModelAdmin):
+    list_display = ('id', 'done')
+    fieldsets = [
+        ('DONE', {'fields': ['done']}),
+        ('JSON', {'fields': ['detail_json_formatted']}),
+    ]
+    readonly_fields = ('detail_json', 'detail_json_formatted')
+admin.site.register(Orders, Orders_Admin)

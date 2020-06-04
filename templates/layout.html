@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super pizza</title>
+    <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -25,8 +26,8 @@
             <a class="m-2" href="/signin">SignIn</a>
             <a class="m-2" href="/signup">SignUp</a>
             {% endif %}
-            <button class="fas fa-cart-arrow-down m-2 btn btn-light" onclick="showList()">
-                <span class="badge badge-danger" id="item-count"></span>
+            <button class="fas fa-cart-arrow-down m-2 btn btn-light" id="car-button">
+                <span class="badge badge-danger" id="item-count">0</span>
             </button>
         </div>
     </div>
