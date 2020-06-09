@@ -31,12 +31,15 @@ def index(request):
 @csrf_exempt
 def updateSL(request):
     if request.method == 'POST':
-        item = request.POST['item']
         user = request.user
         try:
-            shopping_lists[user] += [item]
+            shopping_lists[user] = json.loads(request.POST['list'])
         except:
-            shopping_lists[user] = [item]
+            item = request.POST['item']
+            try:
+                shopping_lists[user] += [item]
+            except:
+                shopping_lists[user] = [item]
         return HttpResponse('successfully', status=200)
     return Http404('Page not found')
 
@@ -66,12 +69,19 @@ def getOrder(request):
 @csrf_exempt
 def makeOrder(request):
     a = json.loads(order_list[request.user])
-    order = Orders.objects.create(detail_json= json.dumps({'user': str(request.user), 'order': list(map(change, a))}))
+    order = Orders.objects.create(username= str(request.user), detail_json= json.dumps({'user': str(request.user), 'order': list(map(change, a))}))
+    shopping_lists[request.user] = []
+    order_list[request.user] = []
     return redirect('index')
 
 def change(item):
     return json.loads(item)
 
+@csrf_exempt
+def myOrders(request):
+    orders = Orders.objects.get(username=str(request.user))
+    return render(request, 'myorders.html', {'orders': orders})
+  
 #login, logout, register
 def signup(request):
     if request.method == 'POST':

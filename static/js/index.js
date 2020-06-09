@@ -70,7 +70,7 @@ function getSL() {
         if (request.status == 200) {
             sl = JSON.parse(request.responseText).list;
             if(typeof sl == 'string') sl = JSON.parse(sl);
-            if (sl.length > 0) writeSL();
+            writeSL();
         }
     }
     const data = new FormData();
@@ -78,30 +78,46 @@ function getSL() {
 }
 
 function writeSL() {
+    let list = document.querySelector('#sl');
+    total.innerHTML = 0;
+    if (sl.length == 0){
+        document.querySelector('#item-count').innerHTML = 0;
+        list.innerHTML = '';
+        return false;
+    }
     document.querySelector('#btn-order').style.display = "block";
     let count = 0;
     let buttons = '';
-    let list = document.querySelector('#sl');
     list.innerHTML = '';
     sl.forEach(item => {
-        buttons = '';
         item = JSON.parse(item);  
         if (parseInt(item.name[0])) {
-            buttons = '<button class="btn btn-danger btn-sm mr-2" data-toggle="modal" data-target="#modal-toppings"><i class="fas fa-plus"></i></button>';
+            buttons = '<button class="btn btn-danger btn-sm mr-2 add" data-toggle="modal" data-target="#modal-toppings"><i class="fas fa-plus"></i></button>';
         }
-        li = document.createElement('li');
+        let li = document.createElement('li');
         li.id = count;
-        li.innerHTML = item.category + " " + item.name + " " + item.size + "<div>" + buttons + "<span>" + item.price + "</span></div>";
+        li.innerHTML = "<div><span class='delete btn'>&times;</span>" + item.category + " " + item.name + " " + item.size + "</div><div>" + buttons + "<span>" + item.price + "</span></div>";
         li.classList.add('d-flex', 'justify-content-between', 'p-2');
         list.append(li);
         total.innerHTML = (parseFloat(total.innerHTML) + parseFloat(item.price)).toFixed(2);
         ++count;
     })
     document.querySelector('#item-count').innerHTML = count;
-    document.querySelector('ul').querySelectorAll('button').forEach(btn => {
+    document.querySelector('ul').querySelectorAll('.add').forEach(btn => {
         btn.onclick = () => {
             let id = parseInt(btn.parentElement.parentElement.id);
             selectToppings(id);
+        }
+    })
+    document.querySelector('ul').querySelectorAll('.delete').forEach(btn => {
+        btn.onclick = () => {
+            let index = btn.parentElement.parentElement.id;
+            sl.splice(index, index + 1);
+            let data = new FormData();
+            data.append('list', JSON.stringify(sl));
+            fetch('http://localhost:8000/update-sl/', {method: 'POST', body: data})
+                .then(res => getSL())
+                .catch(err => console.log(err))
         }
     })
 }

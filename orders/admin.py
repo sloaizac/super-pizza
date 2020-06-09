@@ -24,7 +24,7 @@ class Topping_Admin(admin.ModelAdmin):
 admin.site.register(Topping, Topping_Admin)
 
 class Orders_Admin(admin.ModelAdmin):
-    list_display = ('id', 'done')
+    list_display = ('id', 'done', 'date', 'username')
     fieldsets = [
         ('DONE', {'fields': ['done']}),
         ('JSON', {'fields': ['detail_json_formatted']}),

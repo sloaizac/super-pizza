@@ -11,4 +11,5 @@ urlpatterns = [
     path("order/", views.order, name='order'),
     path("get-order/", views.getOrder, name='getOrder'),
     path("make-order/", views.makeOrder, name='makeOrder'),
+    path("myorders/", views.myOrders, name='myOrders'),
 ]

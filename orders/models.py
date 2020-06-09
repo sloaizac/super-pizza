@@ -1,5 +1,6 @@
 from django.db import models
 import json
+from django.utils.timezone import now
 from django.utils.safestring import mark_safe
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
@@ -41,6 +42,8 @@ class Topping(models.Model):
 class Orders(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     detail_json = models.TextField()
+    username = models.TextField()
+    date = models.DateTimeField(default=now, blank=True)
     done =  models.BooleanField(default=False)
 
     def detail_json_formatted(self):

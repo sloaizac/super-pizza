@@ -10,7 +10,9 @@
             {{ field }}
         </div>
         {% if field.help_text %}
-        <div style="color: grey">{{ field.help_text }}</div>
+        <div style="color: grey">
+            {{ field.help_text }}
+        </div>
         {% endif %}
         {% for error in field.errors %}
             <small style="color: red">{{ error }}</small>
